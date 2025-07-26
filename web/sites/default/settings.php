@@ -1,8 +1,10 @@
 <?php
 
 use Drupal\Core\Installer\InstallerKernel;
+use Drupal\Core\Site\Settings;
 
 $settings['config_sync_directory'] = '../config/export';
+
 
 // @todo it'd be great if the config exclude service wasn't locked to settings
 // but instead service parameters or another way to influence.
@@ -30,24 +32,30 @@ $settings['migrate_node_migrate_type_classic'] = FALSE;
 /**
  * Database connection information.
  */
-if (getenv('DB_CONNECTION') !== 'sqlite') {
-  $databases['default']['default'] = [
-    'driver' => getenv('DB_CONNECTION'),
+if (getenv('DB_CONNECTION') === 'mysql') {
+  $databases['default']['default']  = [
+    // 'driver' => getenv('DB_CONNECTION'),
     'database' => getenv('DRUPAL_DATABASE_NAME'),
     'username' => getenv('DRUPAL_DATABASE_USERNAME'),
     'password' => getenv('DRUPAL_DATABASE_PASSWORD'),
     'host' => getenv('DRUPAL_DATABASE_HOST'),
     'port' => getenv('DRUPAL_DATABASE_PORT'),
+    // 'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
+    // 'driver' => 'mysql',
+    'isolation_level' => 'READ COMMITTED',
+  'driver' => 'mysql',
+  'namespace' => 'Drupal\\mysql\\Driver\\Database\\mysql',
+  'autoload' => 'core/modules/mysql/src/Driver/Database/mysql/',
   ];
 }
-else {
-  $databases['default']['default'] = [
-    'database' => '../private/db.sqlite',
-    'prefix' => '',
-    'namespace' => 'Drupal\\Core\\Database\\Driver\\sqlite',
-    'driver' => 'sqlite',
-  ];
-}
+// else {
+//   $databases['default']['default'] = [
+//     'database' => '../private/db.sqlite',
+//     'prefix' => '',
+//     'namespace' => 'Drupal\\Core\\Database\\Driver\\sqlite',
+//     'driver' => 'sqlite',
+//   ];
+// }
 
 // Reverse proxy detection.
 // Stolen from the trusted_reverse_proxy module.
@@ -99,3 +107,17 @@ $ddev_settings = __DIR__ . '/settings.ddev.php';
 if (getenv('IS_DDEV_PROJECT') === 'true' && is_readable($ddev_settings)) {
   require $ddev_settings;
 }
+$databases['default']['default'] = array (
+  'database' => 'drupalcicd',
+  'username' => 'root',
+  'password' => 'Mysql@123',
+  'prefix' => '',
+  'host' => '127.0.0.1',
+  'port' => '3306',
+  'isolation_level' => 'READ COMMITTED',
+  'driver' => 'mysql',
+  'namespace' => 'Drupal\\mysql\\Driver\\Database\\mysql',
+  'autoload' => 'core/modules/mysql/src/Driver/Database/mysql/',
+);
+$settings['hash_salt'] = '../config/export';
+// $settings['hash_salt'] = 'fyV2fyfB3BUgyLDDIeTb3EyIM5naSGKaxiWu7VNr_0GNxAa07mtdMVVusvHW6DxTVNSZjFga5A';
