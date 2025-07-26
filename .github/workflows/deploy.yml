@@ -20,4 +20,4 @@ jobs:
           coverage: none
           tools: composer:v2
       - run: composer install
-      - rsync -rzcEl . root@159.65.145.67:/var/www/html --exclude-from=".rsyncignore" --checksum --delete
+      - run: rsync -rzcEl . root@159.65.145.67:/var/www/html --exclude-from=".rsyncignore" --checksum --delete
