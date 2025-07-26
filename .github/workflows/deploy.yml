@@ -23,7 +23,7 @@ jobs:
       - name: Set up SSH agent with private key
         uses: webfactory/ssh-agent@v0.9.0
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }} # <----- Ensure this secret name matches what you created
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }} # <--- Ensure this secret name matches what you created
       - run: mkdir -p ~/.ssh && touch ~/.ssh/known_hosts
       - run: |
           mkdir -p ~/.ssh
