@@ -21,10 +21,7 @@ jobs:
           tools: composer:v2
       - run: composer install
       - name: Add remote host to known_hosts
-      - run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H 159.65.145.67 >> ~/.ssh/known_hosts
-          chmod 600 ~/.ssh/known_hosts
+      - run:  ssh-keyscan -H 159.65.145.67 > ~/.ssh/known_hosts
       - name: Run Rsync Deployment
       - run: |
           rsync -rzcEl . root@159.65.145.67:/var/www/html --exclude-from=".rsyncignore" --checksum --delete
