@@ -20,13 +20,14 @@ jobs:
           coverage: none
           tools: composer:v2
       - run: composer install
-      - name: Set up SSH agent with private key
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }} # <--- Ensure this secret name matches what you created
-      - run: mkdir -p ~/.ssh && touch ~/.ssh/known_hosts
-      - run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H 159.65.145.67 >> ~/.ssh/known_hosts
-          chmod 600 ~/.ssh/known_hosts
-      - run: rsync -rzcEl . root@159.65.145.67:/var/www/html --exclude-from=".rsyncignore" --checksum --delete
+      - name: Add identity file Set up SSH agent with private key
+        run: echo "${{ secret.SSH_PRIVATE_KEY }}" >> $HOME/deploy.key
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.PLATFORMSH_SSH_PRIVATE_KEY }}
+      - run: chmod 400 $HOME/deploy.key
+      - run: mkdir -p $HOME/.ssh && touch $HOME/.ssh/known_hosts
+      - name: keyscan
+        run: |
+          ssh-keyscan -H 159.65.145.67 >> $HOME/.ssh/known_hosts
+          chmod 600 $HOME/.ssh/known_hosts
+      - run: rsync -e "ssh -i $HOME/deploy.key" -rzcEl . root@159.65.145.67:/var/www/html --exclude-from=".rsyncignore" --checksum --delete
