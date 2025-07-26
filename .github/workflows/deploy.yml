@@ -21,7 +21,7 @@ jobs:
           tools: composer:v2
       - run: composer install
       - name: Add identity file Set up SSH agent with private key
-        run: echo "${{ secret.SSH_PRIVATE_KEY }}" >> $HOME/deploy.key
+        run: echo "${{ secrets.SSH_PRIVATE_KEY }}" >> $HOME/deploy.key
         env:
           SSH_PRIVATE_KEY: ${{ secrets.PLATFORMSH_SSH_PRIVATE_KEY }}
       - run: chmod 400 $HOME/deploy.key
