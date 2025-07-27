@@ -37,4 +37,4 @@ jobs:
       # - run: ssh root@159.65.145.67 ' /var/www/html/vendor/bin/drush cim --yes'
       - name: Run Drush Deploy with sudo and cd
         run: |
-          ssh -i $HOME/deploy.key root@159.65.145.67 'sudo bash -c "cd /var/www/html && /var/www/html/vendor/bin/drush deploy --yes"'
+          ssh -i $HOME/deploy.key root@159.65.145.67 'sudo bash -c "cd /var/www/html && /var/www/html/vendor/bin/drush deploy --yes -vvv"'
