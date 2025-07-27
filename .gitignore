@@ -39,3 +39,7 @@ node_modules
 /phpunit.xml
 /.phpunit.result.cache
 /clover.xml
+
+# Ignore configuration files that may contain sensitive information.
+sites/*/settings*.php
+sites/*/services*.yml
