@@ -31,3 +31,6 @@ jobs:
           ssh-keyscan -H 159.65.145.67 >> $HOME/.ssh/known_hosts
           chmod 600 $HOME/.ssh/known_hosts
       - run: rsync -e "ssh -i $HOME/deploy.key" -rzcEl . root@159.65.145.67:/var/www/html --exclude-from=".rsyncignore" --checksum --delete
+      # - run: ssh root@159.65.145.67 ' /var/www/html/vendor/bin/drush updb --yes'
+      # - run: ssh root@159.65.145.67 ' /var/www/html/vendor/bin/drush cim --yes'
+      - run: ssh root@159.65.145.67 ' /var/www/html/vendor/bin/drush deploy --yes'
