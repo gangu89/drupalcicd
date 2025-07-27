@@ -23,14 +23,16 @@ jobs:
       - name: Add identity file Set up SSH agent with private key
         run: echo "${{ secrets.SSH_PRIVATE_KEY }}" >> $HOME/deploy.key
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.PLATFORMSH_SSH_PRIVATE_KEY }}
+          SSH_PRIVATE_KEY: ${{ secrets.PLATFORMSH_SSH_PRIVATE_KEY }} > $HOME/deploy.key
       - run: chmod 400 $HOME/deploy.key
       - run: mkdir -p $HOME/.ssh && touch $HOME/.ssh/known_hosts
       - name: keyscan
         run: |
           ssh-keyscan -H 159.65.145.67 >> $HOME/.ssh/known_hosts
           chmod 600 $HOME/.ssh/known_hosts
-      - run: rsync -e "ssh" -rzcEl . root@159.65.145.67:/var/www/html --exclude-from=".rsyncignore" --checksum --delete
+      # - run: rsync -e "ssh" -rzcEl . root@159.65.145.67:/var/www/html --exclude-from=".rsyncignore" --checksum --delete
+      - run: rsync -e "ssh -i $HOME/deploy.key" -rzcEl . root@159.65.145.67:/var/www/html --exclude-from=".rsyncignore" --checksum --delete
+
       # - run: ssh root@159.65.145.67 ' /var/www/html/vendor/bin/drush updb --yes'
       # - run: ssh root@159.65.145.67 ' /var/www/html/vendor/bin/drush cim --yes'
-      - run: ssh root@159.65.145.67 'sudo /var/www/html/vendor/bin/drush deploy --yes'
+      - run: ssh -i $HOME/deploy.key root@159.65.145.67 'sudo cd /var/www/html && vendor/bin/drush deploy --yes'
