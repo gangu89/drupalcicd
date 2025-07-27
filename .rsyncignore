@@ -3,3 +3,6 @@ web/sites/default/files
 .env
 web/sites/default/settings.local.php
 private
+# Ignore configuration files that may contain sensitive information.
+sites/*/settings*.php
+sites/*/services*.yml
