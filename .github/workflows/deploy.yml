@@ -32,11 +32,11 @@ jobs:
           chmod 600 $HOME/.ssh/known_hosts
       # - run: rsync -e "ssh" -rzcEl . root@159.65.145.67:/var/www/html --exclude-from=".rsyncignore" --checksum --delete
       - run: rsync -e "ssh -i $HOME/deploy.key" -rzcEl . root@159.65.145.67:/var/www/html --exclude-from=".rsyncignore" --checksum --delete
-      - name: Fix config profile mismatch (Temporary workaround)
-        run: |
-         ssh -i $HOME/deploy.key root@159.65.145.67 'sudo bash -c "
-         sed -i \"s/profile: standard/profile: cicdprofile/g\" /var/www/html/web/config/sync/core.extension.yml
-         "'
+      # - name: Fix config profile mismatch (Temporary workaround)
+      #   run: |
+      #    ssh -i $HOME/deploy.key root@159.65.145.67 'sudo bash -c "
+      #    sed -i \"s/profile: standard/profile: cicdprofile/g\" /var/www/html/web/config/sync/core.extension.yml
+      #    "'
       # - run: ssh root@159.65.145.67 ' /var/www/html/vendor/bin/drush updb --yes'
       # - run: ssh root@159.65.145.67 ' /var/www/html/vendor/bin/drush cim --yes'
       - name: Run Drush Deploy with sudo and cd
